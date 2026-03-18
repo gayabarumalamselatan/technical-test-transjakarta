@@ -15,10 +15,11 @@ import { useMemo, useState } from "react";
 import { useRoutes } from "./useRoutes";
 import { useTrips } from "./useTrips";
 import SkeletonCard from "../../components/ui/skeleton";
-import DashboardModal from "./dashboardModal";
+
 import type { Vehicle } from "../../types/vehicles";
 import { getStatusLabel } from "../../utils/getStatus";
 import Error from "../../components/ui/error";
+import DashboardModal from "./dashboardModal";
 
 const Dashboard = () => {
   const [page, setPage] = useState(1);
@@ -53,7 +54,6 @@ const Dashboard = () => {
 
   if (error)
     return <Error error={error} onRetry={() => window.location.reload()} />;
-  console.log("selec", selectedRoutes);
 
   return (
     <Fragment>

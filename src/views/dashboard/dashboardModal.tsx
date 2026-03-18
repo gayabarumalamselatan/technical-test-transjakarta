@@ -25,6 +25,7 @@ const DashboardModal = ({ selectedVehicle, setSelectedVehicle }: Props) => {
     onClose: closeMap,
     onOpenChange: toggleMap,
   } = useDisclosure();
+
   console.log(selectedVehicle);
   return (
     <Modal
@@ -168,12 +169,14 @@ const DashboardModal = ({ selectedVehicle, setSelectedVehicle }: Props) => {
                       <MapContainer
                         className=""
                         key={selectedVehicle?.id}
-                        center={
-                          [
+                        {...({
+                          center: [
                             selectedVehicle.latitude,
                             selectedVehicle.longitude,
-                          ] as [number, number]
-                        }
+                          ],
+                          zoom: 13,
+                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        } as any)}
                         zoom={13}
                         style={{ height: "100%", width: "100%" }}
                       >
