@@ -22,7 +22,9 @@ git clone https://github.com/gayabarumalamselatan/technical-test-transjakarta.gi
 ### 2.Install Depedencies
 
 ```js
-npm install
+npm install --legacy-peer-deps
+
+# Perlu menggunakan --legacy-peer-deps agar depedency yang outdated bisa kompatibel dengan react 19 dan vite 8
 ```
 
 ### 3. Jalankan Aplikasi
