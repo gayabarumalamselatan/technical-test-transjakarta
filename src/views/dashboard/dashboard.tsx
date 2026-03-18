@@ -126,7 +126,6 @@ const Dashboard = () => {
         <div className="flex items-center justify-between mb-10">
           <div className="w-full">
             <h1 className="font-semibold text-2xl">Data Kendaraan</h1>
-            <p>Menampilkan </p>
           </div>
           <div className="flex items-center gap-4 w-full text-end justify-end">
             <p>Jumlah data per halaman:</p>
@@ -149,82 +148,113 @@ const Dashboard = () => {
         {/* list */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {isLoading
-            ? Array.from({ length: limit }).map((_, i) => (
-                <SkeletonCard key={i} />
-              ))
-            : data?.vehicles.map((v) => (
-                <div
-                  key={v.id}
-                  onClick={() => {
-                    setSelectedVehicle({
-                      ...v,
-                      route: routeMap[v.routeId],
-                    });
+          {isLoading ? (
+            Array.from({ length: limit }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))
+          ) : data?.vehicles.length === 0 ? (
+            <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+              <div className="bg-slate-100 p-4 rounded-full mb-4">
+                <MapPin className="w-6 h-6 text-slate-500" />
+              </div>
+
+              <h3 className="text-lg font-semibold text-foreground">
+                Tidak ada data kendaraan
+              </h3>
+
+              <p className="text-sm text-muted-foreground mt-1 max-w-md">
+                Data kendaraan tidak ditemukan. Coba ubah filter atau reset
+                pencarian.
+              </p>
+
+              {(selectedRoutes.length > 0 || selectedTrips.length > 0) && (
+                <Button
+                  className="mt-4"
+                  variant="flat"
+                  color="primary"
+                  onPress={() => {
+                    setSelectedRoutes([]);
+                    setSelectedTrips([]);
                   }}
-                  className="hover:cursor-pointer"
                 >
-                  <Card>
-                    <CardHeader className="flex items-start justify-between gap-4 p-4">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                          {v.label}
-                        </h3>
-                        <p className="text-xs text-muted-foreground mt-1">
-                          ID: {v.id}
+                  Reset Filter
+                </Button>
+              )}
+            </div>
+          ) : (
+            data?.vehicles.map((v) => (
+              <div
+                key={v.id}
+                onClick={() => {
+                  setSelectedVehicle({
+                    ...v,
+                    route: routeMap[v.routeId],
+                  });
+                }}
+                className="hover:cursor-pointer"
+              >
+                <Card>
+                  <CardHeader className="flex items-start justify-between gap-4 p-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                        {v.label}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        ID: {v.id}
+                      </p>
+                    </div>
+                    <div
+                      className={`px-3 py-1.5 rounded-full text-xs font-semibold bg-sky-100`}
+                    >
+                      {getStatusLabel(v.status)}
+                    </div>
+                  </CardHeader>
+                  <CardBody className="p-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Rute
+                        </p>
+                        <p className="text-sm font-semibold text-foreground truncate">
+                          {routeMap[v.routeId]?.attributes?.long_name ||
+                            v.routeId}
                         </p>
                       </div>
-                      <div
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold bg-sky-100`}
-                      >
-                        {getStatusLabel(v.status)}
+                      <div>
+                        <p className="text-xs text-muted-foreground mb-1">
+                          Trip
+                        </p>
+                        <p className="text-sm font-semibold text-foreground truncate">
+                          {v.tripId}
+                        </p>
                       </div>
-                    </CardHeader>
-                    <CardBody className="p-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-xs text-muted-foreground mb-1">
-                            Rute
-                          </p>
-                          <p className="text-sm font-semibold text-foreground truncate">
-                            {routeMap[v.routeId]?.attributes?.long_name ||
-                              v.routeId}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-xs text-muted-foreground mb-1">
-                            Trip
-                          </p>
-                          <p className="text-sm font-semibold text-foreground truncate">
-                            {v.tripId}
-                          </p>
-                        </div>
-                      </div>
+                    </div>
 
-                      <div className="flex items-center gap-3 p-2.5 mt-4 bg-slate-50 border border-slate-100 rounded-lg">
-                        <div className="p-1.5 bg-white rounded-md shadow-sm">
-                          <MapPin className="w-3.5 h-3.5 text-primary" />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] text-muted-foreground font-medium">
-                            Koordinat Kendaraan
-                          </p>
-                          <p className="text-[11px] font-mono text-slate-600 truncate">
-                            {v.latitude}, {v.longitude}
-                          </p>
-                        </div>
+                    <div className="flex items-center gap-3 p-2.5 mt-4 bg-slate-50 border border-slate-100 rounded-lg">
+                      <div className="p-1.5 bg-white rounded-md shadow-sm">
+                        <MapPin className="w-3.5 h-3.5 text-primary" />
                       </div>
-                    </CardBody>
-                    <CardFooter className="flex items-center gap-2 p-4 pt-3 border-t border-slate-100 bg-slate-50/50">
-                      <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-                      <p className="text-[11px] text-muted-foreground">
-                        Pembaruan terakhir:{" "}
-                        {new Date(v.updatedAt).toLocaleString()}
-                      </p>
-                    </CardFooter>
-                  </Card>
-                </div>
-              ))}
+                      <div className="min-w-0">
+                        <p className="text-[10px] text-muted-foreground font-medium">
+                          Koordinat Kendaraan
+                        </p>
+                        <p className="text-[11px] font-mono text-slate-600 truncate">
+                          {v.latitude}, {v.longitude}
+                        </p>
+                      </div>
+                    </div>
+                  </CardBody>
+                  <CardFooter className="flex items-center gap-2 p-4 pt-3 border-t border-slate-100 bg-slate-50/50">
+                    <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+                    <p className="text-[11px] text-muted-foreground">
+                      Pembaruan terakhir:{" "}
+                      {new Date(v.updatedAt).toLocaleString()}
+                    </p>
+                  </CardFooter>
+                </Card>
+              </div>
+            ))
+          )}
         </div>
       </section>
 
