@@ -40,11 +40,12 @@ Menggunakan pendekatan arsitektur yang modular dengan pemisahan yang jelas.
 ## Struktur Folder
 
 src/
-├── components/ #Menyimpan komponen ui yang reusable
-├── config/ #Menyimpan konfigurasi
-├── constants/ #Menyimpan konstanta data yang sering digunakan
-├── layout/ #Menyimpan struktur layouting tampilan  
- ├── services/ #Menyimpan fungsi crud dari api
-├── types/ #Menyimpan tipe data
-├── utils/ #Menyimpan fungsi helper dan axios interceptor
-└── views/ #Berisi tampilan halaman beserta fungsi - fungsinya
+
+1. components/ #Menyimpan komponen ui yang reusable
+2. config/ #Menyimpan konfigurasi
+3. constants/ #Menyimpan konstanta data yang sering digunakan
+4. layout/ #Menyimpan struktur layouting tampilan
+5. services/ #Menyimpan fungsi crud dari api
+6. types/ #Menyimpan tipe data
+7. utils/ #Menyimpan fungsi helper dan axios interceptor
+8. views/ #Berisi tampilan halaman beserta fungsi - fungsinya
