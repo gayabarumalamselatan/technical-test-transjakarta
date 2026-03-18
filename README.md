@@ -7,7 +7,7 @@ Aplikasi ini merupakan dashboard untuk memantau data kendaraan secara real-time 
 - React + TypeScript
 - Vite
 - React Query (@tanstack/react-query) → data fetching & caching
-- HeroUI → UI components
+- HeroUI → UI components & pagination
 - Tailwind CSS → styling
 - Leaflet → peta lokasi kendaraan
 
